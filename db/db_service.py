@@ -1,6 +1,6 @@
 import asyncio
 
-from sqlalchemy import select
+from sqlalchemy import select, desc
 from sqlalchemy.sql import func
 
 from db.database import async_session
@@ -28,12 +28,25 @@ async def get_username(acc_id: int):
         username = result.scalar()
         return username.login
 
+async def get_last_two_accs():
+    async with async_session() as session:
+        result = await session.execute(
+            select(AccountModel.id, AccountModel.login).order_by(desc(AccountModel.id)).limit(2)
+        )
+        rows = []
+        for row in result.all():
+            rows.append((row.id, row.login))
+
+        return rows
 
 # async def main():
-#     acc_id = 44
-#     count = await get_rev_and_count(acc_id)
-#     username = await get_username(acc_id)
-#     print(f"{username} = {count}")
+#     # acc_id = 44
+#     # count = await get_rev_and_count(acc_id)
+#     # username = await get_username(acc_id)
+#     # print(f"{username} = {count}")
+#     data = await get_last_two_accs()
+#     print(data)
+#
 #
 #
 # if __name__ == "__main__":
