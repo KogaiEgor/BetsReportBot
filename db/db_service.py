@@ -39,13 +39,23 @@ async def get_last_two_accs():
 
         return rows
 
+
+async def get_last_balance(acc_id: int):
+    async with async_session() as session:
+        result = await session.execute(
+            select(BetModel.balance).where(BetModel.acc_id == acc_id).order_by(desc(BetModel.id)).limit(1)
+        )
+
+        return result.scalar()
 # async def main():
 #     # acc_id = 44
 #     # count = await get_rev_and_count(acc_id)
 #     # username = await get_username(acc_id)
 #     # print(f"{username} = {count}")
-#     data = await get_last_two_accs()
-#     print(data)
+#     # data = await get_last_two_accs()
+#     # print(data)
+#     res = await get_last_balance(44)
+#     print(res)
 #
 #
 #

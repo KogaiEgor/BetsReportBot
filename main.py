@@ -12,7 +12,7 @@ from aiogram.types import (
     KeyboardButton
 )
 
-from db.db_service import get_rev_and_count, get_username, get_last_two_accs
+from db.db_service import get_rev_and_count, get_username, get_last_two_accs, get_last_balance
 
 
 load_dotenv()
@@ -42,15 +42,17 @@ async def get_data(message:Message):
     accs = await get_last_two_accs()
 
     acc_id_1 = accs[0][0]
+    balance_1 = await  get_last_balance(acc_id_1)
     total_amount_1 = await get_rev_and_count(acc_id_1)
     username_1 = await get_username(acc_id_1)
 
     acc_id_2 = accs[1][0]
+    balance_2 = await  get_last_balance(acc_id_2)
     total_amount_2 = await get_rev_and_count(acc_id_2)
     username_2 = await get_username(acc_id_2)
 
-    await message.answer(f"Отчет:\n{username_1}\nКоличество ставок - {total_amount_1[0][0]}\nОборот - {total_amount_1[0][1]}"
-                         f"\n\n{username_2}\nКоличество ставок - {total_amount_2[0][0]}\nОборот - {total_amount_2[0][1]}")
+    await message.answer(f"Отчет:\n{username_1}\nПоследний баланс - {balance_1}\nКоличество ставок - {total_amount_1[0][0]}\nОборот - {total_amount_1[0][1]}"
+                         f"\n\n{username_2}\nПоследний баланс - {balance_2}\nКоличество ставок - {total_amount_2[0][0]}\nОборот - {total_amount_2[0][1]}")
 
 
 @dp.message(F.text.lower() == "аккаунты")
