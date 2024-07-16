@@ -28,6 +28,7 @@ async def get_username(acc_id: int):
         username = result.scalar()
         return username.login
 
+
 async def get_last_two_accs():
     async with async_session() as session:
         result = await session.execute(
@@ -47,6 +48,8 @@ async def get_last_balance(acc_id: int):
         )
 
         return result.scalar()
+
+
 # async def main():
 #     # acc_id = 44
 #     # count = await get_rev_and_count(acc_id)
