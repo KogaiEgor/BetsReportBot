@@ -20,15 +20,6 @@ async def get_rev_and_count(acc_id: int):
         return rows
 
 
-async def get_username(acc_id: int):
-    async with async_session() as session:
-        result = await session.execute(
-            select(AccountModel).where(AccountModel.id == acc_id)
-        )
-        username = result.scalar()
-        return username.login
-
-
 async def get_last_two_accs():
     async with async_session() as session:
         result = await session.execute(

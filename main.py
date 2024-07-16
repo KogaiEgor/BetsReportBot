@@ -12,7 +12,7 @@ from aiogram.types import (
     KeyboardButton
 )
 
-from db.db_service import get_rev_and_count, get_username, get_last_two_accs, get_last_balance
+from db.db_service import get_rev_and_count, get_last_two_accs, get_last_balance
 
 
 load_dotenv()
