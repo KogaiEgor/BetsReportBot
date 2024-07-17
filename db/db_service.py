@@ -20,10 +20,10 @@ async def get_rev_and_count(acc_id: int):
         return rows
 
 
-async def get_last_two_accs():
+async def get_accs(amount: int):
     async with async_session() as session:
         result = await session.execute(
-            select(AccountModel.id, AccountModel.login).order_by(desc(AccountModel.id)).limit(2)
+            select(AccountModel.id, AccountModel.login).order_by(desc(AccountModel.id)).limit(amount)
         )
         rows = []
         for row in result.all():
