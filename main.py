@@ -61,7 +61,7 @@ async def get_data(message:Message):
 @dp.message(F.text.lower() == "аккаунты")
 async def get_acc(message:Message):
     accs = await get_accs(3)
-    await message.answer(f"Активные аккаунты:\n1. {accs[0][1]}\n2. {accs[1][1]}")
+    await message.answer(f"Последние 3 аккаунта:\n1. {accs[0][1]}\n2. {accs[1][1]}")
 
 
 @dp.message()
