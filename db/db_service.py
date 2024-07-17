@@ -20,6 +20,25 @@ async def get_rev_and_count(acc_id: int):
         return rows
 
 
+async def get_active_accs():
+    async with async_session() as session:
+        result = await session.execute(
+            select(BetModel.acc_id).order_by(desc(BetModel.id)).limit(6)
+        )
+        accs = set()
+        for acc_id in result:
+            accs.add(acc_id[0])
+
+        active_accs = await session.execute(
+            select(AccountModel.id, AccountModel.login).where(AccountModel.id.in_(accs))
+        )
+        rows = []
+        for row in active_accs.all():
+            rows.append((row.id, row.login))
+
+        print(rows)
+
+
 async def get_accs(amount: int):
     async with async_session() as session:
         result = await session.execute(
@@ -41,18 +60,17 @@ async def get_last_balance(acc_id: int):
         return result.scalar()
 
 
-# async def main():
-#     # acc_id = 44
-#     # count = await get_rev_and_count(acc_id)
-#     # username = await get_username(acc_id)
-#     # print(f"{username} = {count}")
-#     # data = await get_last_two_accs()
-#     # print(data)
-#     res = await get_last_balance(44)
-#     print(res)
-#
-#
-#
-# if __name__ == "__main__":
-#     asyncio.run(main())
+async def main():
+    # acc_id = 44
+    # count = await get_rev_and_count(acc_id)
+    # username = await get_username(acc_id)
+    # print(f"{username} = {count}")
+    # data = await get_last_two_accs()
+    # print(data)
+    await get_active_accs()
+
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
