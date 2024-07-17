@@ -60,14 +60,14 @@ async def get_last_balance(acc_id: int):
         return result.scalar()
 
 
-async def main():
-    # acc_id = 44
-    # count = await get_rev_and_count(acc_id)
-    # username = await get_username(acc_id)
-    # print(f"{username} = {count}")
-    # data = await get_last_two_accs()
-    # print(data)
-    await get_active_accs()
+# async def main():
+#     # acc_id = 44
+#     # count = await get_rev_and_count(acc_id)
+#     # username = await get_username(acc_id)
+#     # print(f"{username} = {count}")
+#     # data = await get_last_two_accs()
+#     # print(data)
+#     await get_active_accs()
 
 
 
