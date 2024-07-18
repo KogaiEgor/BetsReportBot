@@ -40,22 +40,14 @@ async def start(message: Message):
 @dp.message(F.text.lower() == "отчет по работе")
 async def get_data(message:Message):
     accs = await get_accs(3)
+    msg = 'Отчет:\n'
+    for acc in accs:
+        balance = await get_last_balance(acc[0])
+        count, rev = await get_rev_and_count(acc[0])
 
-    acc_id_1 = accs[0][0]
-    balance_1 = await get_last_balance(acc_id_1)
-    total_amount_1 = await get_rev_and_count(acc_id_1)
+        msg = msg + f'{acc[1]}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
 
-    acc_id_2 = accs[1][0]
-    balance_2 = await get_last_balance(acc_id_2)
-    total_amount_2 = await get_rev_and_count(acc_id_2)
-
-    acc_id_3 = accs[2][0]
-    balance_3 = await get_last_balance(acc_id_3)
-    total_amount_3 = await get_rev_and_count(acc_id_3)
-
-    await message.answer(f"Отчет:\n{accs[0][1]}\nПоследний баланс - {balance_1}\nКоличество ставок - {total_amount_1[0][0]}\nОборот - {total_amount_1[0][1]}"
-                         f"\n\n{accs[1][1]}\nПоследний баланс - {balance_2}\nКоличество ставок - {total_amount_2[0][0]}\nОборот - {total_amount_2[0][1]}"
-                         f"\n\n{accs[2][1]}\nПоследний баланс - {balance_3}\nКоличество ставок - {total_amount_3[0][0]}\nОборот - {total_amount_3[0][1]}")
+    await message.answer(msg)
 
 
 @dp.message(F.text.lower() == "аккаунты")
