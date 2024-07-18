@@ -60,19 +60,31 @@ async def get_last_balance(acc_id: int):
         return result.scalar()
 
 
+async def get_start_balance(acc_id: int):
+    async with async_session() as session:
+        result = await session.execute(
+            select(BetModel.balance).where(BetModel.acc_id == acc_id).limit(1)
+        )
+
+        return result.scalar()
+
+
+async def get_last_ten_bets(accs_ids=None):
+    async with async_session() as session:
+        stmt = select(BetModel.acc_id, BetModel.balance, BetModel.amount, BetModel.bet_datetime).order_by(
+            desc(BetModel.id)).limit(10)
+
+        if accs_ids:
+            stmt = stmt.where(BetModel.acc_id.in_(accs_ids))
+
+        result = await session.execute(stmt)
+        return result.all()
+
 # async def main():
-#     accs = await get_accs(3)
-#     msg = 'Отчет:\n'
-#     for acc in accs:
-#         balance = await get_last_balance(acc[0])
-#         count, rev = await get_rev_and_count(acc[0])
+#     print(await get_last_ten_bets([43, 44]))
 #
-#         msg = msg + f'{acc[1]}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
 #
-#     print(msg)
-
-
-
+#
 # if __name__ == "__main__":
 #     asyncio.run(main())
 
