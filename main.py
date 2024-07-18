@@ -17,7 +17,8 @@ from db.db_service import (
     get_accs,
     get_last_balance,
     get_start_balance,
-    get_active_accs
+    get_active_accs,
+    get_last_ten_bets
 )
 
 
@@ -29,7 +30,8 @@ main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="Отчет по работе"),
-            KeyboardButton(text="Аккаунты")
+            KeyboardButton(text="Аккаунты"),
+            KeyboardButton(text='Последение ставки')
         ]
     ],
     resize_keyboard=True,
@@ -45,7 +47,7 @@ async def start(message: Message):
 
 @dp.message(F.text.lower() == "отчет по работе")
 async def get_data(message:Message):
-    accs = await get_accs(3)
+    accs = await get_active_accs()
     msg = 'Отчет:\n'
     for acc in accs:
         balance = await get_last_balance(acc[0])
@@ -67,6 +69,11 @@ async def get_acc(message:Message):
         msg = msg + f'{i}. {login}\n'
 
     await message.answer(msg)
+
+
+@dp.message(F.text.lower() == "последение ставки")
+async def get_last_bets(message: Message):
+    pass
 
 
 @dp.message()
