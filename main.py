@@ -12,7 +12,13 @@ from aiogram.types import (
     KeyboardButton
 )
 
-from db.db_service import get_rev_and_count, get_accs, get_last_balance
+from db.db_service import (
+    get_rev_and_count,
+    get_accs,
+    get_last_balance,
+    get_start_balance,
+    get_active_accs
+)
 
 
 load_dotenv()
@@ -43,17 +49,24 @@ async def get_data(message:Message):
     msg = 'Отчет:\n'
     for acc in accs:
         balance = await get_last_balance(acc[0])
+        start_balance = await get_start_balance(acc[0])
         count, rev = await get_rev_and_count(acc[0])
 
-        msg = msg + f'{acc[1]}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
+        msg = msg + f'{acc[1]}\nCтартовый баланс - {start_balance}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
 
     await message.answer(msg)
 
 
 @dp.message(F.text.lower() == "аккаунты")
 async def get_acc(message:Message):
-    accs = await get_accs(3)
-    await message.answer(f"Последние 3 аккаунта:\n1. {accs[0][1]}\n2. {accs[1][1]}\n3. {accs[2][1]}")
+    accs = await get_active_accs()
+    msg = 'Последние активные аккаунты\n'
+
+    for i in range(1, len(accs) + 1):
+        login = accs[i - 1][1]
+        msg = msg + f'{i}. {login}\n'
+
+    await message.answer(msg)
 
 
 @dp.message()
