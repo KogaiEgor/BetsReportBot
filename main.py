@@ -14,7 +14,6 @@ from aiogram.types import (
 
 from db.db_service import (
     get_rev_and_count,
-    get_accs,
     get_last_balance,
     get_start_balance,
     get_active_accs,
@@ -73,7 +72,16 @@ async def get_acc(message:Message):
 
 @dp.message(F.text.lower() == "последение ставки")
 async def get_last_bets(message: Message):
-    pass
+    data = await get_last_ten_bets()
+
+    msg = 'Последние 10 ставок:\n'
+    for record in data:
+        acc_id, balance, bet, timestamp = record
+        formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+        msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nВремя - {formatted_timestamp}\n\n'
+
+    await message.answer(msg)
 
 
 @dp.message()
