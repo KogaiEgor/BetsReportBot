@@ -12,12 +12,12 @@ async def get_rev_and_count(acc_id: int):
         result = await session.execute(
             select(func.count(BetModel.amount), func.sum(BetModel.amount)).where(BetModel.acc_id == acc_id)
         )
-        rows = []
-        for row in result:
-            count, total_sum = row
-            rows.append((count, total_sum))
+        # rows = []
+        # for row in result:
+        #     count, total_sum = row
+        #     rows.append((count, total_sum))
 
-        return rows
+        return result.all()[0]
 
 
 async def get_active_accs():
@@ -36,7 +36,7 @@ async def get_active_accs():
         for row in active_accs.all():
             rows.append((row.id, row.login))
 
-        print(rows)
+        return rows
 
 
 async def get_accs(amount: int):
@@ -61,16 +61,18 @@ async def get_last_balance(acc_id: int):
 
 
 # async def main():
-#     # acc_id = 44
-#     # count = await get_rev_and_count(acc_id)
-#     # username = await get_username(acc_id)
-#     # print(f"{username} = {count}")
-#     # data = await get_last_two_accs()
-#     # print(data)
-#     await get_active_accs()
+#     accs = await get_accs(3)
+#     msg = 'Отчет:\n'
+#     for acc in accs:
+#         balance = await get_last_balance(acc[0])
+#         count, rev = await get_rev_and_count(acc[0])
+#
+#         msg = msg + f'{acc[1]}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
+#
+#     print(msg)
 
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())
 
