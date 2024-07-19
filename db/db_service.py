@@ -1,5 +1,4 @@
 import asyncio
-from datetime import datetime
 
 from sqlalchemy import select, desc
 from sqlalchemy.sql import func
@@ -85,20 +84,20 @@ async def get_last_ten_bets(accs_ids=None):
         result = await session.execute(stmt)
         return result.all()
 
-async def main():
-    data = await get_last_ten_bets()
-
-    msg = 'Последние 10 ставок:\n'
-    for record in data:
-        acc_id, balance, bet, timestamp = record
-        formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
-
-        msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nВремя - {formatted_timestamp}\n\n'
-
-    print(msg)
-
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+# async def main():
+#     data = await get_last_ten_bets()
+#
+#     msg = 'Последние 10 ставок:\n'
+#     for record in data:
+#         acc_id, balance, bet, timestamp = record
+#         formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+#
+#         msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nВремя - {formatted_timestamp}\n\n'
+#
+#     print(msg)
+#
+#
+#
+# if __name__ == "__main__":
+#     asyncio.run(main())
 
