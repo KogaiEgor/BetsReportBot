@@ -17,7 +17,7 @@ from db.db_service import (
     get_last_balance,
     get_start_balance,
     get_active_accs,
-    get_last_ten_bets
+    get_last_bets
 )
 
 
@@ -72,7 +72,7 @@ async def get_acc(message:Message):
 
 @dp.message(F.text.lower() == "последение ставки")
 async def get_last_bets(message: Message):
-    data = await get_last_ten_bets()
+    data = await get_last_bets(10)
 
     msg = 'Последние 10 ставок:\n'
     for record in data:

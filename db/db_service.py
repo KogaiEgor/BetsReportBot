@@ -69,13 +69,13 @@ async def get_start_balance(acc_id: int):
         return result.scalar()
 
 
-async def get_last_ten_bets(accs_ids=None):
+async def get_last_bets(bets_limit: int, accs_ids=None):
     async with async_session() as session:
         stmt = (
             select(AccountModel.login, BetModel.balance, BetModel.amount, BetModel.bet_datetime)
             .join(AccountModel, BetModel.acc_id == AccountModel.id)
             .order_by(desc(BetModel.id))
-            .limit(10)
+            .limit(bets_limit)
         )
 
         if accs_ids:
