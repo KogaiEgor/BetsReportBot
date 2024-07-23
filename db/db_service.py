@@ -23,7 +23,7 @@ async def get_rev_and_count(acc_id: int):
 async def get_active_accs():
     async with async_session() as session:
         result = await session.execute(
-            select(BetModel.acc_id).order_by(desc(BetModel.id)).limit(6)
+            select(BetModel.acc_id).order_by(desc(BetModel.id)).limit(8)
         )
         accs = set()
         for acc_id in result:
