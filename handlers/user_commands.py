@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
 
 from db.db_service import (
     get_rev_and_count,
@@ -31,6 +32,11 @@ async def get_data(message:Message):
         msg = msg + f'{acc[1]}\nCтартовый баланс - {start_balance}\nПоследний баланс - {balance}\nКоличество ставок - {count}\nОборот - {rev}\n\n'
 
     await message.answer(msg)
+
+
+@router.message(F.text.lower() == 'отчет по дням')
+async def get_stat_by_day():
+    pass
 
 
 @router.message(F.text.lower() == "аккаунты")

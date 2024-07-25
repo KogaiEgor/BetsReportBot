@@ -10,7 +10,8 @@ main_kb = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="Отчет по работе"),
             KeyboardButton(text="Аккаунты"),
-            KeyboardButton(text='Последение ставки')
+            KeyboardButton(text='Последение ставки'),
+            KeyboardButton(text='Отчет по дням')
         ]
     ],
     resize_keyboard=True,

@@ -13,10 +13,6 @@ async def get_rev_and_count(acc_id: int):
         result = await session.execute(
             select(func.count(BetModel.amount), func.sum(BetModel.amount)).where(BetModel.acc_id == acc_id)
         )
-        # rows = []
-        # for row in result:
-        #     count, total_sum = row
-        #     rows.append((count, total_sum))
 
         return result.all()[0]
 
@@ -72,6 +68,7 @@ async def get_balance_by_day(acc_id: int):
 
         result = await session.execute(stmt)
         return result.all()
+
 
 async def get_active_accs():
     async with async_session() as session:
