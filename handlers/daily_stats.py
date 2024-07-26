@@ -17,7 +17,7 @@ async def ask_acc_id(message: Message, state: FSMContext):
     msg = "Введите id аккаунта:\n"
     for i in range(1, len(accs) + 1):
         login = accs[i - 1][1]
-        msg = msg + f'{i}. {login}\n'
+        msg = msg + f'{accs[i - 1][0]}. {login}\n'
 
     await message.answer(msg)
 
