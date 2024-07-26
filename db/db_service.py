@@ -89,6 +89,19 @@ async def get_active_accs():
         return rows
 
 
+async def get_spain_accs():
+    async with async_session() as session:
+        result = await session.execute(
+            select(AccountModel.id, AccountModel.login).where(AccountModel.id >= 42)
+        )
+
+        rows = []
+        for row in result.all():
+            rows.append((row.id, row.login))
+
+        return rows
+
+
 async def get_accs(amount: int):
     async with async_session() as session:
         result = await session.execute(
@@ -135,16 +148,10 @@ async def get_last_bets(bets_limit: int, accs_ids=None):
         return result.all()
 
 
-async def main():
-    data = await get_statistic_by_day(45)
-
-    print(data)
-
-    data = await get_balance_by_day(45)
-
-    print(data)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+# async def main():
+#     data = await get_spain_accs()
+#     print(data)
+#
+# if __name__ == "__main__":
+#     asyncio.run(main())
 
