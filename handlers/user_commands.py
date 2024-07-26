@@ -34,11 +34,6 @@ async def get_data(message:Message):
     await message.answer(msg)
 
 
-@router.message(F.text.lower() == 'отчет по дням')
-async def get_stat_by_day():
-    pass
-
-
 @router.message(F.text.lower() == "аккаунты")
 async def get_acc(message:Message):
     accs = await get_active_accs()
