@@ -58,8 +58,3 @@ async def get_last_bets_handler(message: Message):
         msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nВремя - {formatted_timestamp}\n\n'
 
     await message.answer(msg)
-
-
-@router.message()
-async def echo(message: Message):
-    await message.answer("Я вас не понял")
