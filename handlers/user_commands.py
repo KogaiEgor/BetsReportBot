@@ -3,13 +3,13 @@ from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
-from db.db_service import (
+from db.queries.stat_queries import (
     get_rev_and_count,
     get_last_balance,
     get_start_balance,
-    get_active_accs,
     get_last_bets
 )
+from db.queries.accs_queries import get_active_accs
 from keyboards.keyboard import main_kb
 
 

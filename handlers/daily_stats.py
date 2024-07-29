@@ -1,10 +1,11 @@
 from aiogram import Router, F
-from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
 from utils.states import StatByDay
-from db.db_service import get_spain_accs, get_balance_by_day, get_statistic_by_day
+from db.queries.accs_queries import get_spain_accs
+from db.queries.daily_balance import get_balance_by_day
+from db.queries.daily_stat import get_statistic_by_day
 
 
 
