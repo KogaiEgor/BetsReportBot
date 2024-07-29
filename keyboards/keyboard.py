@@ -14,6 +14,9 @@ main_kb = ReplyKeyboardMarkup(
         [
             KeyboardButton(text='Последение ставки'),
             KeyboardButton(text='Отчет по дням')
+        ],
+        [
+            KeyboardButton(text="Вся история")
         ]
     ],
     resize_keyboard=True,
