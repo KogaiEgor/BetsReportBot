@@ -43,3 +43,4 @@ async def get_daily_stat_for_all():
         )
         result = await session.execute(stmt)
         return result.all()
+
