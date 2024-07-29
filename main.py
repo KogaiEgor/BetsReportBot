@@ -4,7 +4,7 @@ import asyncio
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 
-from handlers import user_commands, daily_stats, echo_handler
+from handlers import user_commands, daily_stats, echo_handler, get_excel_handler
 
 
 
@@ -19,6 +19,7 @@ async def main():
 
     dp.include_routers(
         user_commands.router,
+        get_excel_handler.router,
         daily_stats.router,
         echo_handler.router
     )

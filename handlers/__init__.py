@@ -1,1 +1,1 @@
-from . import user_commands, daily_stats, echo_handler
+from . import user_commands, daily_stats, echo_handler, get_excel_handler
