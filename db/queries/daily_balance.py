@@ -8,8 +8,10 @@ from db.models import BetModel
 
 async def get_balance_by_day(acc_id: int):
     async with async_session() as session:
+        # Упрощаем выбор дней и временных меток
         day_trunc = func.date_trunc('day', BetModel.bet_datetime).label('day')
 
+        # Подзапрос для получения первого и последнего времени ставки за каждый день
         subquery = (
             select(
                 day_trunc,
@@ -23,21 +25,29 @@ async def get_balance_by_day(acc_id: int):
             .subquery()
         )
 
+        # Алиасы для первой и последней ставки
         first_bets = aliased(BetModel)
         last_bets = aliased(BetModel)
 
+        # Основной запрос для соединения с подзапросом и получения балансов
         stmt = (
             select(
                 subquery.c.day,
-                first_bets.balance,
-                last_bets.balance
+                first_bets.balance.label('start_balance'),
+                last_bets.balance.label('end_balance')
             )
             .join(first_bets, first_bets.bet_datetime == subquery.c.first_bet_datetime)
             .join(last_bets, last_bets.bet_datetime == subquery.c.last_bet_datetime)
+            .where(
+                first_bets.acc_id == acc_id,  # Убедитесь, что соединение по аккаунту корректно
+                last_bets.acc_id == acc_id
+            )
+            .order_by(subquery.c.day)  # Сортировка по дням
         )
 
         result = await session.execute(stmt)
         return result.all()
+
 
 
 async def get_daily_balance_for_all():
