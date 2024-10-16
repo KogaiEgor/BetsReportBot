@@ -1,5 +1,7 @@
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, distinct
+from datetime import datetime, timedelta, timezone
 
+import asyncio
 from db.database import async_session
 from db.models import BetModel, AccountModel
 
@@ -7,9 +9,20 @@ from db.models import BetModel, AccountModel
 
 async def get_active_accs():
     async with async_session() as session:
-        result = await session.execute(
-            select(BetModel.acc_id).order_by(desc(BetModel.id)).limit(8)
+        subquery = (
+            select(BetModel.acc_id, BetModel.bet_datetime)
+            .where(BetModel.bet_datetime >= (datetime.now() - timedelta(hours=12)))
+            .order_by(BetModel.bet_datetime.desc())
+            .subquery()
         )
+
+        query = (
+            select(distinct(subquery.c.acc_id))
+            .limit(10)
+        )
+
+        result = await session.execute(query)
+
         accs = set()
         for acc_id in result:
             accs.add(acc_id[0])
@@ -22,6 +35,7 @@ async def get_active_accs():
             rows.append((row.id, row.login))
 
         return rows
+
 
 
 async def get_spain_accs():
