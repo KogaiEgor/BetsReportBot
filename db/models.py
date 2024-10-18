@@ -8,14 +8,15 @@ class BetModel(Base):
 
     id = Column(Integer, primary_key=True)
     bet_datetime = Column(DateTime)
-    bet_type = Column(String)
+    market = Column(String)
+    arb_or_value = Column(String)
     amount = Column(Float)
     koef = Column(Float)
     bk2_koef = Column(Float)
     pre_koef = Column(Float)
     acc_id = Column(Integer, ForeignKey("Accounts.id"))
     account = relationship("AccountModel", back_populates="bets")
-    arb = Column(Float)
+    arb_or_value_percent = Column(Float)
     balance = Column(Float)
     name = Column(String)
 
