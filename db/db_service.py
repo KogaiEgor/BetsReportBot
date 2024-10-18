@@ -2,7 +2,7 @@ import asyncio
 import queries
 
 async def main():
-    data = await queries.get_daily_stat_for_all()
+    data = await queries.get_last_bets(10, [70])
     print(data)
 
 if __name__ == "__main__":

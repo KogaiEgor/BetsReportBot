@@ -52,9 +52,9 @@ async def get_last_bets_handler(message: Message):
 
     msg = 'Последние 10 ставок:\n'
     for record in data:
-        acc_id, balance, bet, timestamp = record
+        acc_id, balance, bet, bet_type, timestamp = record
         formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
-        msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nВремя - {formatted_timestamp}\n\n'
+        msg = msg + f'{acc_id}\nБаланс - {balance}\nСтавка - {bet}\nТип - {bet_type}\nВремя - {formatted_timestamp}\n\n'
 
     await message.answer(msg)
