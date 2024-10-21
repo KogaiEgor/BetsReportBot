@@ -1,9 +1,10 @@
 from aiogram import Router, F
 from aiogram.types import Message
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
 from utils.states import StatByDay
-from db.queries.accs_queries import get_spain_accs
+from db.queries.accs_queries import get_accs
 from db.queries.daily_balance import get_balance_by_day
 from db.queries.daily_stat import get_statistic_by_day
 
@@ -11,10 +12,10 @@ from db.queries.daily_stat import get_statistic_by_day
 
 router = Router()
 
-@router.message(F.text.lower() == 'отчет по дням')
+@router.message(Command("daily_report"))
 async def ask_acc_id(message: Message, state: FSMContext):
     await state.set_state(StatByDay.acc_id)
-    accs = await get_spain_accs()
+    accs = await get_accs(42)
     msg = "Введите id аккаунта:\n"
     for i in range(1, len(accs) + 1):
         login = accs[i - 1][1]

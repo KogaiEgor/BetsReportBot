@@ -7,9 +7,10 @@ from db.queries.stat_queries import (
     get_rev_and_count,
     get_last_balance,
     get_start_balance,
-    get_last_bets
+    get_last_bets,
+    get_working_time
 )
-from db.queries.accs_queries import get_active_accs
+from db.queries.accs_queries import get_active_accs, get_accs
 from keyboards.keyboard import main_kb
 
 
@@ -17,10 +18,10 @@ router = Router()
 
 @router.message(CommandStart())
 async def start(message: Message):
-    await message.answer("Hello!", reply_markup=main_kb)
+    await message.answer("Hello!")
 
 
-@router.message(F.text.lower() == "отчет по работе")
+@router.message(Command("work_report"))
 async def get_data(message:Message):
     accs = await get_active_accs()
     msg = 'Отчет:\n'
@@ -34,19 +35,31 @@ async def get_data(message:Message):
     await message.answer(msg)
 
 
-@router.message(F.text.lower() == "аккаунты")
-async def get_acc(message:Message):
-    accs = await get_active_accs()
-    msg = 'Последние активные аккаунты\n'
+@router.message(Command("accs_report"))
+async def get_repor_by_acc(message: Message):
+    accs = await get_accs(65)
+    msg = ''
 
-    for i in range(1, len(accs) + 1):
-        login = accs[i - 1][1]
-        msg = msg + f'{i}. {login}\n'
+    for acc in accs:
+        acc_id = acc[0]
+        username = acc[1]
+
+        balance = await get_last_balance(acc_id)
+        start_balance = await get_start_balance(acc_id)
+        count, rev = await get_rev_and_count(acc_id)
+        working_time = await get_working_time(acc_id)
+
+        msg = msg + f'{username}\n' \
+                    f'Время работы - {working_time}\n' \
+                    f'Cтартовый баланс - {start_balance}\n' \
+                    f'Последний баланс - {balance}\n' \
+                    f'Количество ставок - {count}\n' \
+                    f'Оборот - {rev}\n' \
+                    f'РОИ - {round((balance - start_balance) / rev, 2)}\n\n'
 
     await message.answer(msg)
 
-
-@router.message(F.text.lower() == "последение ставки")
+@router.message(Command("last_bets"))
 async def get_last_bets_handler(message: Message):
     data = await get_last_bets(10)
 

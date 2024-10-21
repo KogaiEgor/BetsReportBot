@@ -1,4 +1,5 @@
-from sqlalchemy import select, desc, distinct
+from sqlalchemy import select, desc, distinct, delete
+from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta, timezone
 
 import asyncio
@@ -53,3 +54,12 @@ async def get_accs(n: int):
             rows.append((row.id, row.login))
 
         return rows
+
+
+async def delete_acc(acc_id: int):
+    async with async_session() as session:
+        account = await session.get(AccountModel, acc_id)
+        if account:
+            await session.delete(account)
+            await session.commit()
+

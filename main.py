@@ -3,6 +3,7 @@ import asyncio
 
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
+from aiogram.types import BotCommand
 
 from handlers import user_commands, daily_stats, echo_handler, get_excel_handler
 
@@ -25,7 +26,16 @@ async def main():
     )
 
     await bot.delete_webhook(drop_pending_updates=True)
+    await bot.set_my_commands([
+        BotCommand(command="/start", description="Start bot"),
+        BotCommand(command="/daily_report", description="Отчет по дням"),
+        BotCommand(command="/work_report", description="Отчет по работе"),
+        BotCommand(command="/last_bets", description="Последние ставки"),
+        BotCommand(command="/accs_report", description="Ответ по аккаунтам")
+    ])
+
     await dp.start_polling(bot)
+
 
 
 if __name__ == "__main__":
