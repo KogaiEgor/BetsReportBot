@@ -1,5 +1,6 @@
 from sqlalchemy import select, desc
 from sqlalchemy.sql import func
+from sqlalchemy.orm import query
 
 from db.database import async_session
 from db.models import BetModel, AccountModel
@@ -32,6 +33,23 @@ async def get_start_balance(acc_id: int):
         )
 
         return result.scalar()
+
+
+async def get_working_time(acc_id: int):
+    async with async_session() as session:
+        first_row_subquery = select(BetModel.bet_datetime).filter(BetModel.acc_id == acc_id).order_by(
+            BetModel.bet_datetime.asc()).limit(1).scalar_subquery()
+
+        last_row_subquery = select(BetModel.bet_datetime).filter(BetModel.acc_id == acc_id).order_by(
+            BetModel.bet_datetime.desc()).limit(1).scalar_subquery()
+
+        time_difference_query = select(last_row_subquery - first_row_subquery)
+
+        result = await session.execute(time_difference_query)
+        time_difference = result.scalar()
+
+        time_diff = str(time_difference).split('.')[0]
+        return time_diff
 
 
 async def get_last_bets(bets_limit: int, accs_ids=None):
