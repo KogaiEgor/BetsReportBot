@@ -37,11 +37,15 @@ async def get_active_accs():
         return rows
 
 
-
-async def get_spain_accs():
+async def get_accs(n: int):
+    """
+    Get all accs from n to the last
+    :param n: int
+    :return:
+    """
     async with async_session() as session:
         result = await session.execute(
-            select(AccountModel.id, AccountModel.login).where(AccountModel.id >= 42)
+            select(AccountModel.id, AccountModel.login).where(AccountModel.id >= n)
         )
 
         rows = []
@@ -49,5 +53,3 @@ async def get_spain_accs():
             rows.append((row.id, row.login))
 
         return rows
-
-
