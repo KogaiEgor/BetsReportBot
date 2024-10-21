@@ -55,7 +55,7 @@ async def get_repor_by_acc(message: Message):
                     f'Последний баланс - {balance}\n' \
                     f'Количество ставок - {count}\n' \
                     f'Оборот - {rev}\n' \
-                    f'РОИ - {round((balance - start_balance) / rev, 2)}\n\n'
+                    f'РОИ: {round(((balance - start_balance) / rev) * 100, 2)}%\n\n'
 
     await message.answer(msg)
 
